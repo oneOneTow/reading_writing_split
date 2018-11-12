@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vens.mapper.UserMapper">
+    <select id="findUserById" parameterType="Integer" resultType="User">
+		select * from user where id = #{v}
+	</select>
+    <insert id="insertUser" parameterType="com.vens.pojos.User" useGeneratedKeys="true" keyProperty="ID">
+        insert into user (user_name,password,phone)
+        values (#{name},#{password},#{phone})
+    </insert>
+</mapper>
