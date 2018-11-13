@@ -2,8 +2,12 @@ package com.vens.aop;
 
 import com.vens.annotion.DataSource;
 import com.vens.data.DynamicDataSourceHolder;
+import com.vens.service.UserService;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
@@ -13,7 +17,8 @@ import java.lang.reflect.Method;
  * @date 2018/11/12
  */
 public class DataSourceAop {
-    public void before(ProceedingJoinPoint pjp){
+    private static final Logger logger = LoggerFactory.getLogger(DataSourceAop.class);
+    public void before(JoinPoint pjp){
         Object target=pjp.getTarget();
         String method=pjp.getSignature().getName();
         Class<?> [] clazzs=target.getClass().getInterfaces();
@@ -23,7 +28,7 @@ public class DataSourceAop {
             if(m!=null&&m.isAnnotationPresent(DataSource.class)){
                 DataSource dataSource=m.getAnnotation(DataSource.class);
                 DynamicDataSourceHolder.putDataSource(dataSource.value());
-                System.out.println(dataSource.value());
+                logger.info("dataSource:{}",dataSource.value());
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

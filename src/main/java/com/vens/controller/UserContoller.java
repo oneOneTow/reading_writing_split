@@ -4,6 +4,7 @@ import com.vens.beans.ResultBean;
 import com.vens.pojos.User;
 import com.vens.service.UserService;
 import com.vens.vo.UserVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,17 +20,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/user")
 public class UserContoller {
 
+    @Autowired
     private UserService userService;
+
     @RequestMapping(
-            name = "/register",
+            path = "/register.do",
             method = RequestMethod.POST
     )
     @ResponseBody
     public ResultBean<Long> register(@RequestBody User user){
         return new ResultBean<Long>(userService.addUser(user));
     }
-    @RequestMapping(name = "/login",method = RequestMethod.POST)
-    public ResultBean<String> login(UserVo userVo){
-        return new ResultBean<String>(userService.login(userVo.getName(),userVo.getPassword()));
+    @RequestMapping(
+            path = "/login.do",
+            method = RequestMethod.POST
+    )
+    @ResponseBody
+    public ResultBean<String> login(@RequestBody UserVo userVo){
+        return new ResultBean<String>(userService.login(userVo.getPhone(),userVo.getPassword()));
     }
 }

@@ -8,22 +8,19 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:annotation-config/>
-
     <aop:aspectj-autoproxy/>
     <bean id="dataSourceAop" class="com.vens.aop.DataSourceAop"/>
     <bean id="controllerAop" class="com.vens.aop.ControllerAop"/>
     <aop:config>
         <aop:aspect id="dataAop" ref="dataSourceAop">
-            <aop:pointcut id="tx" expression="execution(* com.air.shop.mapper.*.*(..))"/>
+            <aop:pointcut id="tx" expression="execution(public * com.vens.mapper.*.*(..))"/>
             <aop:before  pointcut-ref="tx" method="before"/>
         </aop:aspect>
-    </aop:config>
-    <aop:config>
         <aop:aspect id="ctrAop" ref="controllerAop">
             <aop:pointcut id="target" expression="execution(public com.vens.beans.ResultBean *(..))"/>
             <aop:around method="handlerControllerMethod" pointcut-ref="target"/>
         </aop:aspect>
     </aop:config>
+
 
 </beans>

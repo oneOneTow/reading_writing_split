@@ -1,12 +1,15 @@
 package com.vens.filter;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.vens.utils.UserUtil;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
@@ -29,8 +32,7 @@ public class UserFilter implements Filter {
 
         try {
             chain.doFilter(request, response);
-        }
-        finally {
+        } finally {
             // 由于tomcat线程重用，记得清空
             clearAllUserInfo();
         }
@@ -40,9 +42,24 @@ public class UserFilter implements Filter {
         UserUtil.clearAllUserInfo();
     }
 
-    private void fillUserInfo(HttpServletRequest request) {
+    private void fillUserInfo(HttpServletRequest request) throws IOException {
         // 用户信息
-        String user = getUserFromSession(request);
+        //String user = getUserFromSession(request);
+        String user = null;
+        String uri = request.getRequestURI();
+        if (null != uri && uri.contains("login")) {
+            BufferedReader br = request.getReader();
+            String body = "";
+            String temp;
+            while (null != (temp = br.readLine())) {
+                body += temp;
+            }
+            JSONObject bodyJson = JSON.parseObject(body);
+            user = (String) bodyJson.get("phone");
+        } else {
+            String token = getTokenFromCookies(request);
+            user = getUserByToken(token);
+        }
 
         if (user != null) {
             UserUtil.setUser(user);
@@ -55,6 +72,26 @@ public class UserFilter implements Filter {
         if (locale != null) {
             UserUtil.setLocale(locale);
         }
+    }
+
+    private String getTokenFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies == null) {
+            return null;
+        }
+
+        for (int i = 0; i < cookies.length; i++) {
+            if (UserUtil.KEY_TOKEN.equals(cookies[i].getName())) {
+                return cookies[i].getValue();
+            }
+        }
+
+        return null;
+    }
+
+    private String getUserByToken(String token) {
+        return token;
     }
 
     private String getLocaleFromCookies(HttpServletRequest request) {

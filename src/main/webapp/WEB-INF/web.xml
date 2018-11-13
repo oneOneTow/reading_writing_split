@@ -41,7 +41,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>springMVC</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>*.do</url-pattern>
     </servlet-mapping>
     <!--把applicationContext.xml加入到配置文件中-->
     <context-param>
@@ -51,4 +51,9 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
+    <welcome-file-list>
+        <welcome-file>/index.jsp</welcome-file>
+        <welcome-file>/index.html</welcome-file>
+    </welcome-file-list>
 </web-app>

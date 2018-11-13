@@ -14,8 +14,8 @@ public class DynamicDataSourceHolder {
     public static void putDataSource(String name) {
         holder.set(name);
     }
-
     public static String getDataSouce() {
-        return holder.get();
+        String dataSource=holder.get();
+        return dataSource;
     }
 }

@@ -29,6 +29,10 @@ public class UserUtil {
 
   public static final String KEY_USER = "user";
 
+  public static final String KEY_TOKEN = "token";
+
+
+
   public static void setUser(String userId) {
     tlUser.set(userId);
     MDC.put(KEY_USER, userId);
