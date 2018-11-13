@@ -27,11 +27,17 @@ public class UserService {
 
     public String login(String phone, String password) {
         logger.info("login:{}", phone);
-        CheckUtil.notNull(password, "ÃÜÂë²»¶Ô");
-        CheckUtil.notNull(phone, "µç»°Îª¿Õ");
-        User user = userMapper.getByPhone(phone);
+        CheckUtil.notNull(password, "ï¿½ï¿½ï¿½ë²»ï¿½ï¿½");
+        CheckUtil.notNull(phone, "ï¿½ç»°Îªï¿½ï¿½");
+
+        User user = null;
+        try{
+            user=userMapper.getByPhone(phone);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (!password.equals(user.getPassword())) {
-            CheckUtil.check(false, "ÃÜÂë²»¶Ô");
+            CheckUtil.check(false, "ï¿½ï¿½ï¿½ë²»ï¿½ï¿½");
         }
         return "token:HDJDJLDFCSHJ**))C)S5";
     }

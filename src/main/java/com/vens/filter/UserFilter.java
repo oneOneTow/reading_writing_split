@@ -1,15 +1,13 @@
 package com.vens.filter;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.vens.utils.IpUtil;
 import com.vens.utils.UserUtil;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
@@ -27,13 +25,13 @@ public class UserFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
 
-        // µÃµ½ÓÃ»§¸öÈËÏà¹ØµÄÐÅÏ¢£¨µÇÂ½µÄÓÃ»§£¬ÓÃ»§µÄÓïÑÔ£©
+        // ï¿½Ãµï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½
         fillUserInfo((HttpServletRequest) request);
 
         try {
             chain.doFilter(request, response);
         } finally {
-            // ÓÉÓÚtomcatÏß³ÌÖØÓÃ£¬¼ÇµÃÇå¿Õ
+            // ï¿½ï¿½ï¿½ï¿½tomcatï¿½ß³ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½Çµï¿½ï¿½ï¿½ï¿½
             clearAllUserInfo();
         }
     }
@@ -43,19 +41,22 @@ public class UserFilter implements Filter {
     }
 
     private void fillUserInfo(HttpServletRequest request) throws IOException {
-        // ÓÃ»§ÐÅÏ¢
+        // ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
         //String user = getUserFromSession(request);
         String user = null;
         String uri = request.getRequestURI();
-        if (null != uri && uri.contains("login")) {
-            BufferedReader br = request.getReader();
-            String body = "";
-            String temp;
-            while (null != (temp = br.readLine())) {
-                body += temp;
-            }
-            JSONObject bodyJson = JSON.parseObject(body);
-            user = (String) bodyJson.get("phone");
+        if (null != uri
+                && uri.contains("login")
+                && uri.contains("register")) {
+//            BufferedReader br = request.getReader();
+//            String body = "";
+//            String temp;
+//            while (null != (temp = br.readLine())) {
+//                body += temp;
+//            }
+//            JSONObject bodyJson = JSON.parseObject(body);
+//            user = (String) bodyJson.get("phone");
+            user= IpUtil.getRealIp(request);
         } else {
             String token = getTokenFromCookies(request);
             user = getUserByToken(token);
@@ -65,10 +66,10 @@ public class UserFilter implements Filter {
             UserUtil.setUser(user);
         }
 
-        // ÓïÑÔÐÅÏ¢
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
         String locale = getLocaleFromCookies(request);
 
-        // ·ÅÈëµ½threadlocal£¬Í¬Ò»¸öÏß³ÌÈÎºÎµØ·½¶¼¿ÉÒÔÄÃ³öÀ´
+        // ï¿½ï¿½ï¿½ëµ½threadlocalï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½ß³ï¿½ï¿½ÎºÎµØ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½
         if (locale != null) {
             UserUtil.setLocale(locale);
         }
@@ -117,7 +118,7 @@ public class UserFilter implements Filter {
             return null;
         }
 
-        // ´ÓsessionÖÐ»ñÈ¡ÓÃ»§ÐÅÏ¢·Åµ½¹¤¾ßÀàÖÐ
+        // ï¿½ï¿½sessionï¿½Ð»ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½Ï¢ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         return (String) session.getAttribute(UserUtil.KEY_USER);
     }
 
