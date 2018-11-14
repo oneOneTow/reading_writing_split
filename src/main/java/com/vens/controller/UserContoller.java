@@ -29,7 +29,7 @@ public class UserContoller {
     )
     @ResponseBody
     public ResultBean<Long> register(@RequestBody User user){
-        return new ResultBean<Long>(userService.addUser(user));
+        return new ResultBean<>(userService.addUser(user));
     }
     @RequestMapping(
             path = "/login.do",
@@ -37,6 +37,6 @@ public class UserContoller {
     )
     @ResponseBody
     public ResultBean<String> login(@RequestBody UserVo userVo){
-        return new ResultBean<String>(userService.login(userVo.getPhone(),userVo.getPassword()));
+        return new ResultBean<>(userService.login(userVo.getPhone(),userVo.getPassword()));
     }
 }

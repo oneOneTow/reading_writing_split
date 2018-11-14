@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author LuZhiqing
  * @Description:
@@ -27,17 +30,16 @@ public class UserService {
 
     public String login(String phone, String password) {
         logger.info("login:{}", phone);
-        CheckUtil.notNull(password, "���벻��");
-        CheckUtil.notNull(phone, "�绰Ϊ��");
-
-        User user = null;
+        CheckUtil.notEmpty(password, "电话为空");
+        List<User> user = new ArrayList<>();
         try{
             user=userMapper.getByPhone(phone);
         }catch (Exception e){
             e.printStackTrace();
         }
-        if (!password.equals(user.getPassword())) {
-            CheckUtil.check(false, "���벻��");
+        CheckUtil.notNull(user.get(0), "result为空");
+        if (!password.equals(user.get(0).getPassword())) {
+            CheckUtil.check(false, "电话为空");
         }
         return "token:HDJDJLDFCSHJ**))C)S5";
     }

@@ -4,19 +4,14 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>测试页面4</title>
-    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script src="/statics/js/app/common.js"/>
-    <script src="/statics/js/app/login.js"/>
-    <script src="/statics/js/app/model.js"/>
-    <script src="/statics/js/app/register.js"/>
 </head>
 <body>
 <div>
     <input type="text" id="phone" value="输入phone"/><br>
     <input type="text" id="name" value="输入name"/><br>
     <input type="text" id="password" value="输入password"/><br>
-    <input type="button" value="sign up" onclick="register()"/>
-    <input type="button" value="sign in" onclick="login()"/>
+    <input type="button" value="sign up" />
+    <input type="button" value="sign in" />
 </div>
 </body>
 </html>
