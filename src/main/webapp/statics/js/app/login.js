@@ -1,3 +1,8 @@
+
+function redirectToReg(){
+    window.location.href = "/index.jsp";
+}
+
 function login(LogModel){
     var data = JSON.stringify(LogModel);
     console.log(data);

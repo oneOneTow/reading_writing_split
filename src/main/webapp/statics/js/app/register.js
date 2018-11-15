@@ -1,4 +1,4 @@
-function login(RegModel){
+function register(RegModel){
     var data = JSON.stringify(RegModel);
     console.log(data);
     $.ajax({

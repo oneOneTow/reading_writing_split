@@ -25,13 +25,11 @@ public class UserFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
 
-        // �õ��û�������ص���Ϣ����½���û����û������ԣ�
-        fillUserInfo((HttpServletRequest) request);
 
+        fillUserInfo((HttpServletRequest) request);
         try {
             chain.doFilter(request, response);
         } finally {
-            // ����tomcat�߳����ã��ǵ����
             clearAllUserInfo();
         }
     }
@@ -41,7 +39,7 @@ public class UserFilter implements Filter {
     }
 
     private void fillUserInfo(HttpServletRequest request) throws IOException {
-        // �û���Ϣ
+
         //String user = getUserFromSession(request);
         String user = null;
         String uri = request.getRequestURI();
@@ -66,10 +64,8 @@ public class UserFilter implements Filter {
             UserUtil.setUser(user);
         }
 
-        // ������Ϣ
         String locale = getLocaleFromCookies(request);
 
-        // ���뵽threadlocal��ͬһ���߳��κεط��������ó���
         if (locale != null) {
             UserUtil.setLocale(locale);
         }
@@ -118,7 +114,6 @@ public class UserFilter implements Filter {
             return null;
         }
 
-        // ��session�л�ȡ�û���Ϣ�ŵ���������
         return (String) session.getAttribute(UserUtil.KEY_USER);
     }
 
