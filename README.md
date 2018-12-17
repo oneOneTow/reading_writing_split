@@ -1,11 +1,11 @@
-# 数据库读写分离demo
+# mysql读写分离demo
 * git clone
 * run in tomcat
 
 > 注册实现写<br>
 登录实现读
 
-## 使用springAop实现读写分离
+### 使用springAop实现读写分离
 1. 数据库使用了mysql,需要master,slave两个数据库
 2. web使用springMvc
 3. orm使用mybatis
